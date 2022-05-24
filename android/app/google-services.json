@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "206265439348",
+    "project_id": "moj-majstor-a2658",
+    "storage_bucket": "moj-majstor-a2658.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206265439348:android:c4420e046c88e20e216d21",
+        "android_client_info": {
+          "package_name": "bytech.rs.moj_majstor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206265439348-g2vam3nf027r2fdn385fknep2ifaidg5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bytech.rs.moj_majstor",
+            "certificate_hash": "2c66d6b2c15faf652f38300b7f5b3f9d2453a0ad"
+          }
+        },
+        {
+          "client_id": "206265439348-0sn8e66r3ck1jdhmuieoc2j3gf0qv6ld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKFrfASIksijXbmrlN9i-bNyD6A0Cz8-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206265439348-0sn8e66r3ck1jdhmuieoc2j3gf0qv6ld.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "206265439348-mmdrb40cojptmj527n1vgbue8684d8l6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.moj-majstor.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
