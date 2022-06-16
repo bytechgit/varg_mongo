@@ -1,74 +1,52 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import 'models/Majstor.dart';
+//import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Filter extends GetxController {
-  DocumentSnapshot<Object?>? lastReadedDoc;
-  final _firestore = FirebaseFirestore.instance;
   var majstori = [].obs;
   var category = 'vodoinstalater'.obs;
   var categoryIcon = ''.obs;
   var sortBy = 'Popularnost'.obs;
-  String? city = 'Leskovac';
+  String? city = '';
+  int skip = 0;
   final searchcontroller = TextEditingController();
   void handleSortByChange(String? value) {
     sortBy(value.toString());
   }
 
-  Future<int> search() async {
-    final readedDoc = (await _firestore
-        .collection("Users")
-        .where('primaryOccupation', isEqualTo: category.value)
-        .where('city', isEqualTo: city)
-        // .orderBy("score")
-        .limit(1)
-        .get());
-    majstori.clear();
-    for (var document in readedDoc.docs) {
-      majstori.add(MajstorModel.fromMap(document.data()));
-    }
-    if (readedDoc.docs.isNotEmpty) {
-      lastReadedDoc = readedDoc.docs.last;
-    }
-    return readedDoc.docs.length;
-  }
-
-  Future<int> loadMore() async {
-    if (lastReadedDoc == null) {
-      final newDocumentList = (await _firestore
-          .collection("Users")
-          .where('primaryOccupation', isEqualTo: category.value)
-          .where('city', isEqualTo: city)
-          .orderBy(sortBy)
-          .limit(2)
-          .get());
-      for (var document in newDocumentList.docs) {
-        majstori.add(MajstorModel.fromMap(document.data()));
+  Future<int> get(bool first) async {
+    int pomskip = skip;
+    try {
+      if (first == true) {
+        majstori.clear();
+        skip = 0;
       }
-      if (newDocumentList.docs.isNotEmpty) {
-        lastReadedDoc = newDocumentList.docs.last;
+      final response = await http.post(
+        Uri.parse('http://100.101.167.63:3000/getUsers'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'skip': skip,
+          'city': city,
+          'limit': 10,
+          'primaryOccupation': category.value
+        }),
+      );
+      if (response.statusCode == 200) {
+        for (var m in jsonDecode(response.body)) {
+          {
+            majstori.add(MajstorModel.fromMap(m));
+            skip++;
+          }
+        }
       }
-      return newDocumentList.docs.length;
-    } else {
-      final newDocumentList = (await _firestore
-          .collection("Users")
-          .where('primaryOccupation', isEqualTo: category.value)
-          .where('city', isEqualTo: city)
-          // .orderBy("score")
-          .startAfterDocument(lastReadedDoc!)
-          .limit(3)
-          .get());
-      for (var document in newDocumentList.docs) {
-        majstori.add(MajstorModel.fromMap(document.data()));
-      }
-      if (newDocumentList.docs.isNotEmpty) {
-        lastReadedDoc = newDocumentList.docs.last;
-      }
-      return newDocumentList.docs.length;
+      return skip - pomskip;
+    } catch (e) {
+      return 0;
     }
   }
 }

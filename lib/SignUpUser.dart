@@ -183,15 +183,15 @@ class _SignUpUserState extends State<SignUpUser> {
                                 elevation: 5),
                             onPressed: () async {
                               if (formkey.currentState?.validate() == true) {
-                                String result = await ua.signUp(
-                                    email: emailcontroller.text,
-                                    password: passwordcontroller.text,
-                                    fullName: namecontroller.text,
-                                    city: citycontroller.text,
-                                    streetAddress:
-                                        streetaddresscontroller.text);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(result)));
+                                // String result = await ua.signUp(
+                                //     email: emailcontroller.text,
+                                //     password: passwordcontroller.text,
+                                //     fullName: namecontroller.text,
+                                //     city: citycontroller.text,
+                                //     streetAddress:
+                                //         streetaddresscontroller.text);
+                                // ScaffoldMessenger.of(context).showSnackBar(
+                                //     SnackBar(content: Text(result)));
                               }
                             },
                             child: Center(

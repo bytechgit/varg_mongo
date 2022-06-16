@@ -298,7 +298,7 @@ class _ProfilState extends State<Profil> {
                                                     rate: 3,
                                                     commentText:
                                                         "Marijin komentar"));
-                                                return Reviews(models: models);
+                                                return Reviews(models: []);
                                               },
                                             );
                                           },

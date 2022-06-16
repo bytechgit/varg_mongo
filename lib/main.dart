@@ -9,6 +9,7 @@ import 'package:moj_majstor/InternetConnection.dart';
 import 'package:moj_majstor/Login.dart';
 import 'package:moj_majstor/filter.dart';
 import 'package:moj_majstor/home.dart';
+import 'package:moj_majstor/messageControler.dart';
 import 'package:moj_majstor/proba.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final filterController = Get.put(Filter());
+  final messageController = Get.put(messageControler());
   final FCM.Notification _notification = FCM.Notification();
   final InternetConnection _connection = InternetConnection();
   //AppState as = AppState();

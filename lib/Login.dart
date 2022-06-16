@@ -1,13 +1,19 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:get/get.dart';
 import 'package:moj_majstor/ForgotPassword.dart';
 import 'package:moj_majstor/LocalDatabase.dart';
 import 'package:moj_majstor/PhoneNumber.dart';
 import 'package:moj_majstor/SignUp.dart';
+import 'package:moj_majstor/messageControler.dart';
+import 'package:moj_majstor/models/Majstor.dart';
 import 'package:moj_majstor/models/User.dart';
+import 'package:moj_majstor/models/message.dart';
+import 'package:moj_majstor/mongo.dart';
 import 'Authentication.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:moj_majstor/Notification.dart' as FCM;
@@ -21,6 +27,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   UserAuthentication ua = UserAuthentication();
+  final messageController = Get.find<messageControler>();
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool showPassword = true;
   final emailcontroller = TextEditingController();
@@ -148,7 +155,7 @@ class _LoginState extends State<Login> {
                       elevation: 5),
                   onPressed: () async {
                     if (formkey.currentState?.validate() == true) {
-                      String result = await ua.Login(
+                      String result = await ua.login(
                           email: emailcontroller.text,
                           password: passwordcontroller.text);
 
@@ -220,6 +227,7 @@ class _LoginState extends State<Login> {
                       ),
                       onTap: () async {
                         // ua.signInwithFacebook();
+
                         String result = await ua.signInwithFacebook();
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(result)));

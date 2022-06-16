@@ -28,7 +28,7 @@ class _EditProfileMajstorState extends State<EditProfileMajstor> {
   late TextEditingController occupationcontroller =
       TextEditingController(text: widget.majstor.primaryOccupation);
   late TextEditingController aboutcontroller =
-      TextEditingController(text: widget.majstor.description);
+      TextEditingController(text: widget.majstor.bio);
   late TextEditingController phoneNumbercontroller =
       TextEditingController(text: widget.majstor.phoneNumber);
   late TextEditingController addresscontroller = TextEditingController(

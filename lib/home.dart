@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:moj_majstor/InternetConnection.dart';
 import 'package:moj_majstor/Login.dart';
 import 'package:moj_majstor/PhoneLogin.dart';
-import 'package:moj_majstor/Profil.dart';
+import 'package:moj_majstor/models/Majstor.dart';
+import 'package:moj_majstor/pom.dart';
 import 'package:moj_majstor/proba.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'PhoneNumber.dart';
@@ -24,7 +25,9 @@ class _HomeState extends State<Home> {
     proba(),
     Login(),
     proba(),
-    Profil(),
+    Profil(
+      majstor: MajstorModel(UID: "ddsd", fullName: "ddd"),
+    ),
   ];
   final PageController pageController = PageController();
   void _onItemTapped(int index) {

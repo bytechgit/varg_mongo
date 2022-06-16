@@ -29,13 +29,14 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       recommendationNumber: fields[9] as int?,
       profilePicture: fields[10] as String?,
       primaryOccupation: fields[11] as String?,
+      favorites: (fields[12] as List?)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.UID)
       ..writeByte(1)
@@ -59,7 +60,9 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(10)
       ..write(obj.profilePicture)
       ..writeByte(11)
-      ..write(obj.primaryOccupation);
+      ..write(obj.primaryOccupation)
+      ..writeByte(12)
+      ..write(obj.favorites);
   }
 
   @override

@@ -2,12 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:moj_majstor/AppState.dart';
 import 'package:moj_majstor/CategoryItem.dart';
 import 'package:moj_majstor/filter.dart';
-import 'package:provider/provider.dart';
-
-import 'getxstate.dart';
 
 class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
   double toolBarHeight;
@@ -88,10 +84,6 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
                         child: IconButton(
                           onPressed: () {
                             Scaffold.of(context).openEndDrawer();
-                            //storeController.updateFollowerCount();
-                            Get.snackbar(
-                                'Updated', 'Store name has been updated ton ',
-                                snackPosition: SnackPosition.BOTTOM);
                           },
                           icon: Icon(
                             Icons.tune,

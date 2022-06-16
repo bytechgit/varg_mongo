@@ -27,6 +27,8 @@ class UserData extends HiveObject {
   final String? profilePicture;
   @HiveField(11)
   final String? primaryOccupation;
+  @HiveField(12)
+  final List<String>? favorites;
 
   UserData(
       {required this.UID,
@@ -40,7 +42,8 @@ class UserData extends HiveObject {
       this.reviewsNumber,
       this.recommendationNumber,
       this.profilePicture,
-      this.primaryOccupation});
+      this.primaryOccupation,
+      this.favorites});
   Map<String, dynamic> toMap() {
     return {
       'UID': UID,
@@ -63,7 +66,7 @@ class UserData extends HiveObject {
         fullName = map["fullName"],
         streetAddress = map["streetAddress"],
         phoneNumber = map["phoneNumber"],
-        occupation = ((map["occupation"] as List<dynamic>)
+        occupation = (((map["occupation"] ?? []) as List<dynamic>)
             .map((e) => e.toString())
             .toList()),
         description = map["description"],
@@ -71,5 +74,8 @@ class UserData extends HiveObject {
         reviewsNumber = map["reviewsNumber"],
         recommendationNumber = map["recommendationNumber"],
         profilePicture = map["profilePicture"],
+        favorites = (((map["favorites"] ?? []) as List<dynamic>)
+            .map((e) => e.toString())
+            .toList()),
         primaryOccupation = map["primaryOccupation"];
 }

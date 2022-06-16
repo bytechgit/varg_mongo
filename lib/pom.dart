@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:moj_majstor/Authentication.dart';
+import 'package:get/get.dart';
+import 'package:moj_majstor/Chat.dart';
 import 'package:moj_majstor/EditProfileMajstor.dart';
 import 'package:moj_majstor/Review.dart';
-import 'package:moj_majstor/Reviews.dart';
+import 'package:moj_majstor/messageList.dart';
 import 'package:moj_majstor/models/Majstor.dart';
-import 'package:moj_majstor/models/ReviewModel.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:moj_majstor/ProfilePreview.dart';
-import 'package:moj_majstor/EditProfileMajstor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'Inbox.dart';
 import 'ReviewLinearRating.dart';
+import 'messageControler.dart';
 import 'models/InboxModel.dart';
 
 class Profil extends StatefulWidget {
@@ -27,6 +23,7 @@ class Profil extends StatefulWidget {
 
 class _ProfilState extends State<Profil> {
   bool fullScreenComments = false;
+  final messageController = Get.find<messageControler>();
   bool isFollowing = false;
   int lenght = 4;
   List<Widget> getOccupations(List<String>? strings) {
@@ -35,7 +32,7 @@ class _ProfilState extends State<Profil> {
       for (var i = 0; i < strings.length; i++) {
         list.add(
           Padding(
-            padding: EdgeInsets.only(right: 5, bottom: 5),
+            padding: const EdgeInsets.only(right: 5, bottom: 5),
             child: Chip(
               label: Text(strings[i]),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -52,26 +49,10 @@ class _ProfilState extends State<Profil> {
   Color likeColor = Colors.grey;
   @override
   void initState() {
-    inboxmodel.add(InboxModel(
-        profilePhoto:
-            "https://lh3.googleusercontent.com/ogw/ADea4I6uQeJPyoCB5xCXF5eKxHM_NEKnu6V0iE__X4fA=s64-c-mo",
-        name: "Marija Krsanin",
-        time: "01:12",
-        lastMessage: "cao"));
-    inboxmodel.add(InboxModel(
-        profilePhoto:
-            "https://lh3.googleusercontent.com/ogw/ADea4I6uQeJPyoCB5xCXF5eKxHM_NEKnu6V0iE__X4fA=s64-c-mo",
-        name: "Marija Krsanin",
-        time: "yesterday",
-        lastMessage: "cao"));
-    inboxmodel.add(InboxModel(
-        profilePhoto:
-            "https://lh3.googleusercontent.com/ogw/ADea4I6uQeJPyoCB5xCXF5eKxHM_NEKnu6V0iE__X4fA=s64-c-mo",
-        name: "Marija Krsanin",
-        time: "yesterday",
-        lastMessage: "cao"));
-
     super.initState();
+    if (widget.majstor.comments.isEmpty) {
+      widget.majstor.getComments();
+    }
   }
 
   Future<void> _callNumber(String phoneNumber) async {
@@ -81,7 +62,7 @@ class _ProfilState extends State<Profil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(245, 245, 245, 1),
+      backgroundColor: const Color.fromRGBO(245, 245, 245, 1),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -100,7 +81,7 @@ class _ProfilState extends State<Profil> {
                                     majstor: widget.majstor)),
                           );
                         },
-                        icon: Icon(Icons.settings),
+                        icon: const Icon(Icons.settings),
                         iconSize: 30,
                         color: Colors.white,
                         alignment: Alignment.topRight,
@@ -125,7 +106,7 @@ class _ProfilState extends State<Profil> {
                       width: double.infinity,
                       // height: MediaQuery.of(context).size.height,
                       //     height: 100,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
@@ -139,7 +120,7 @@ class _ProfilState extends State<Profil> {
                             children: [
                               Text(
                                 widget.majstor.fullName,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 30.0,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87),
@@ -149,7 +130,6 @@ class _ProfilState extends State<Profil> {
                                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                                 child: Text(
                                   widget.majstor.primaryOccupation ?? "",
-                                  //ua.currentUser?.primaryOccupation ?? "aa",
                                   style: const TextStyle(
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600),
@@ -165,7 +145,7 @@ class _ProfilState extends State<Profil> {
                                   children: [
                                     Column(
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Ocena',
                                           style: TextStyle(fontSize: 20),
                                         ),
@@ -185,7 +165,7 @@ class _ProfilState extends State<Profil> {
                                     ),
                                     Column(
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Preporuke',
                                           style: TextStyle(fontSize: 20),
                                         ),
@@ -194,20 +174,20 @@ class _ProfilState extends State<Profil> {
                                                       .recommendationNumber ??
                                                   0)
                                               .toString(),
-                                          style: TextStyle(fontSize: 20),
+                                          style: const TextStyle(fontSize: 20),
                                         ),
                                       ],
                                     ),
                                     Column(
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Recenzije',
                                           style: TextStyle(fontSize: 20),
                                         ),
                                         Text(
                                           (widget.majstor.reviewsNumber ?? 0)
                                               .toString(),
-                                          style: TextStyle(fontSize: 20),
+                                          style: const TextStyle(fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -222,53 +202,63 @@ class _ProfilState extends State<Profil> {
                                     Card(
                                       elevation: 3,
                                       child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            if (favoriteColor == Colors.grey) {
+                                        onPressed: () async {
+                                          if (!widget.majstor.isInFavorites()) {
+                                            bool result = await widget.majstor
+                                                .addToFavorites(false);
+                                            if (result) {
                                               Fluttertoast.showToast(
                                                 msg: 'Dodato u omiljene',
                                                 gravity: ToastGravity.BOTTOM,
                                               );
-                                              favoriteColor = Color.fromARGB(
-                                                  255, 100, 120, 254);
-                                            } else
-                                              favoriteColor = Colors.grey;
-                                          });
+                                            }
+                                          } else {
+                                            widget.majstor.addToFavorites(true);
+                                          }
+                                          setState(() {});
                                         },
                                         icon: Icon(
                                           Icons.favorite,
-                                          color: favoriteColor,
+                                          color: widget.majstor.isInFavorites()
+                                              ? const Color.fromARGB(
+                                                  255, 100, 120, 254)
+                                              : Colors.grey,
                                           size: 30,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 20,
                                     ),
                                     Card(
                                       elevation: 3,
                                       child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            if (likeColor == Colors.grey) {
+                                        onPressed: () async {
+                                          if (!widget.majstor.isLiked()) {
+                                            bool result = await widget.majstor
+                                                .addLike(false);
+                                            if (result) {
                                               Fluttertoast.showToast(
-                                                msg: 'Preporučeno',
+                                                msg: 'Liked',
                                                 gravity: ToastGravity.BOTTOM,
                                               );
-                                              likeColor = Color.fromARGB(
-                                                  255, 100, 120, 254);
-                                            } else
-                                              likeColor = Colors.grey;
-                                          });
+                                            }
+                                          } else {
+                                            widget.majstor.addLike(true);
+                                          }
+                                          setState(() {});
                                         },
                                         icon: Icon(
                                           Icons.thumb_up,
-                                          color: likeColor,
+                                          color: widget.majstor.isLiked()
+                                              ? const Color.fromARGB(
+                                                  255, 100, 120, 254)
+                                              : Colors.grey,
                                           size: 30,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 20,
                                     ),
                                     Card(
@@ -278,11 +268,14 @@ class _ProfilState extends State<Profil> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Inbox(models: inboxmodel)),
+                                              builder: (context) => Chat(
+                                                ml: messageController.getChat(
+                                                    widget.majstor.UID),
+                                              ),
+                                            ),
                                           );
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.message,
                                           color: Colors.grey,
                                           size: 30,
@@ -292,7 +285,7 @@ class _ProfilState extends State<Profil> {
                                   ],
                                 ),
                               ),
-                              Divider(thickness: 1),
+                              const Divider(thickness: 1),
                               Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -314,7 +307,7 @@ class _ProfilState extends State<Profil> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10),
                                       child: Text(
-                                        widget.majstor.description ?? "",
+                                        widget.majstor.bio ?? "",
                                         style: const TextStyle(
                                           fontSize: 15.0,
                                         ),
@@ -324,7 +317,7 @@ class _ProfilState extends State<Profil> {
                                   ],
                                 ),
                               ),
-                              Divider(thickness: 1),
+                              const Divider(thickness: 1),
                               Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -351,47 +344,15 @@ class _ProfilState extends State<Profil> {
                                   ],
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 thickness: 1,
                               ),
-                              ReviewRating(),
-                              Review(
-                                model: ReviewModel(
-                                    fullName: 'Sasa Stojiljkovic',
-                                    rate: 4.5,
-                                    commentText:
-                                        'You can try removing the maxLines: 1, and adding width constraints to your Text e.g wrapping it with a SizedBox, this way the text will wrap to the next line :',
-                                    profileImage:
-                                        'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
-                              ),
-                              Review(
-                                model: ReviewModel(
-                                    fullName: 'Sasa Stojiljkovic',
-                                    rate: 4.5,
-                                    commentText:
-                                        'You can try removing the maxLines: 1, and adding width constraints to your Text e.g wrapping it with a SizedBox, this way the text will wrap to the next line :',
-                                    profileImage:
-                                        'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
-                              ),
-                              Review(
-                                model: ReviewModel(
-                                    fullName: 'Sasa Stojiljkovic',
-                                    rate: 4.5,
-                                    commentText:
-                                        'You can try removing the maxLines: 1, and adding width constraints to your Text e.g wrapping it with a SizedBox, this way the text will wrap to the next line :',
-                                    profileImage:
-                                        'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
-                              ),
-                              Review(
-                                model: ReviewModel(
-                                    fullName: 'Sasa Stojiljkovic',
-                                    rate: 4.5,
-                                    commentText:
-                                        'You can try removing the maxLines: 1, and adding width constraints to your Text e.g wrapping it with a SizedBox, this way the text will wrap to the next line :',
-                                    profileImage:
-                                        'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
-                              ),
-                              SizedBox(
+                              const ReviewRating(),
+                              for (var c in widget.majstor.comments)
+                                Review(
+                                  model: c,
+                                ),
+                              const SizedBox(
                                 height: 70,
                               )
                             ],
@@ -406,7 +367,8 @@ class _ProfilState extends State<Profil> {
                       alignment: Alignment.center,
                       child: CircleAvatar(
                         radius: 75,
-                        backgroundColor: Color.fromARGB(255, 126, 143, 247),
+                        backgroundColor:
+                            const Color.fromARGB(255, 126, 143, 247),
                         child: CircleAvatar(
                           radius: 70.0,
                           backgroundImage: NetworkImage(
@@ -433,7 +395,7 @@ class _ProfilState extends State<Profil> {
           Icons.phone,
           color: Colors.white,
         ),
-        backgroundColor: Color.fromARGB(255, 100, 121, 254),
+        backgroundColor: const Color.fromARGB(255, 100, 121, 254),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

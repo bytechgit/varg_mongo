@@ -10,7 +10,7 @@ import 'PhoneNumber.dart';
 
 class Majstor extends StatefulWidget {
   final MajstorModel majstor;
-  const Majstor({Key? key, required this.majstor}) : super(key: key);
+  Majstor({Key? key, required this.majstor}) : super(key: key);
 
   @override
   State<Majstor> createState() => _MajstorState();
@@ -27,16 +27,16 @@ class _MajstorState extends State<Majstor> {
     return list;
   }
 
-  Widget icon = Icon(
-    Icons.star_border,
-    color: Color.fromARGB(255, 144, 159, 254),
-    size: 40,
-  );
   bool ic = true;
   void doNothing(BuildContext context) {}
   Future<void> _callNumber(BuildContext context) async {
     var res = await launch(
         "tel:" + (widget.majstor.phoneNumber ?? "000")); //callNumber(_number);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -55,20 +55,20 @@ class _MajstorState extends State<Majstor> {
       child: Slidable(
         key: const ValueKey(0),
         endActionPane: ActionPane(
-          motion: ScrollMotion(),
+          motion: const ScrollMotion(),
           children: [
             SlidableAction(
               // An action can be bigger than the others.
               flex: 1,
               onPressed: _callNumber,
-              backgroundColor: Color(0xFF7BC043),
+              backgroundColor: const Color(0xFF7BC043),
               foregroundColor: Colors.white,
               icon: Icons.call,
               label: 'Pozovi',
             ),
             SlidableAction(
               onPressed: doNothing,
-              backgroundColor: Color(0xFF0392CF),
+              backgroundColor: const Color(0xFF0392CF),
               foregroundColor: Colors.white,
               icon: Icons.message,
               label: 'Poruka',
@@ -82,25 +82,22 @@ class _MajstorState extends State<Majstor> {
               child: Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        if (ic == true) {
-                          icon = Icon(
-                            Icons.star_border,
-                            color: Color.fromARGB(255, 144, 159, 254),
-                            size: 40,
-                          );
-                        } else {
-                          icon = Icon(
-                            Icons.star,
-                            color: Color.fromARGB(255, 144, 159, 254),
-                            size: 40,
-                          );
-                        }
-                        ic = !ic;
-                      });
-                    },
-                    icon: icon),
+                  onPressed: () async {
+                    if (widget.majstor.isInFavorites()) {
+                      await widget.majstor.addToFavorites(true);
+                    } else {
+                      await widget.majstor.addToFavorites(false);
+                    }
+                    setState(() {});
+                  },
+                  icon: Icon(
+                    widget.majstor.isInFavorites()
+                        ? Icons.star
+                        : Icons.star_border,
+                    color: const Color.fromARGB(255, 144, 159, 254),
+                    size: 40,
+                  ),
+                ),
               ),
             ),
             Column(children: [
@@ -113,7 +110,8 @@ class _MajstorState extends State<Majstor> {
                       padding: const EdgeInsets.only(top: 20.0, left: 10),
                       child: CircleAvatar(
                         radius: 35,
-                        backgroundColor: Color.fromARGB(255, 84, 106, 255),
+                        backgroundColor:
+                            const Color.fromARGB(255, 84, 106, 255),
                         child: CircleAvatar(
                           radius: 34,
                           backgroundImage: NetworkImage(widget
@@ -167,8 +165,8 @@ class _MajstorState extends State<Majstor> {
                                     itemSize: 22.0,
                                     direction: Axis.horizontal,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 10.0),
                                     child: Text(
                                       '120',
                                       style: TextStyle(
@@ -199,7 +197,7 @@ class _MajstorState extends State<Majstor> {
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 thickness: 1,
                 height: 1,
               )

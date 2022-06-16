@@ -143,7 +143,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   padding: const EdgeInsets.only(left: 10, right: 4),
                   child: TextButton(
                     onPressed: () async {
-                      await filterController.search();
+                      await filterController.get(true);
                       inspect(filterController.majstori);
                       Navigator.pop(context);
                     },

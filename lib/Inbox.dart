@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:moj_majstor/CardInbox.dart';
+import 'package:moj_majstor/messageList.dart';
 import 'package:moj_majstor/models/InboxModel.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:moj_majstor/Search.dart';
-import 'package:moj_majstor/Chat.dart';
-
-import 'Chat.dart';
+import 'messageControler.dart';
+import 'models/message.dart';
 
 class Inbox extends StatefulWidget {
   Inbox({Key? key, required List<InboxModel> models}) : super(key: key) {
@@ -21,7 +20,7 @@ class _InboxState extends State<Inbox> {
   _InboxState(List<InboxModel> models) {
     this._models = models;
   }
-
+  final messageController = Get.find<messageControler>();
   late List<InboxModel> _models;
   @override
   Widget build(BuildContext context) {
@@ -58,11 +57,17 @@ class _InboxState extends State<Inbox> {
                     alignment: Alignment.topRight,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Search()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const Search()),
+                        // );
+
+                        messageController.recieveMessage(Message(
+                            text: "text",
+                            dateTime: DateTime.now().second.toString(),
+                            sender: "sender",
+                            chatId: "chatId"));
                       },
                       icon: const Icon(Icons.search),
                       iconSize: 30,
@@ -86,48 +91,21 @@ class _InboxState extends State<Inbox> {
               ),
             ),
           ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                ..._models
-                    .map(
-                      (InboxModel element) => GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Chat()),
-                          );
-                        },
-                        child: Slidable(
-                          key: const ValueKey(0),
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (context) {},
-                                backgroundColor: const Color(0xFF7BC043),
-                                foregroundColor: Colors.white,
-                                icon: Icons.archive,
-                                label: 'Arhiviraj',
-                              ),
-                              SlidableAction(
-                                onPressed: (context) {},
-                                backgroundColor: const Color(0xFF0392CF),
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Obriši',
-                              ),
-                            ],
-                          ),
-                          child: CardInbox(
+          Expanded(
+            child: SingleChildScrollView(
+              child: Obx(
+                () => Column(
+                  children: [
+                    ...messageController.chat.value
+                        .map(
+                          (MessageList element) => CardInbox(
                             model: element,
                           ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ],
+                        )
+                        .toList(),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

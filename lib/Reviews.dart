@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:moj_majstor/AddRate.dart';
 import 'package:moj_majstor/Review.dart';
+import 'package:moj_majstor/models/Comment.dart';
 import 'package:moj_majstor/models/ReviewModel.dart';
 
 class Reviews extends StatefulWidget {
-  Reviews({Key? key, required List<ReviewModel> models}) : super(key: key) {
+  Reviews({Key? key, required List<Comment> models}) : super(key: key) {
     _models = models;
   }
-  late List<ReviewModel> _models;
+  late List<Comment> _models;
 
   @override
   State<Reviews> createState() => _ReviewsState(_models);
 }
 
 class _ReviewsState extends State<Reviews> {
-  _ReviewsState(List<ReviewModel> models) {
+  _ReviewsState(List<Comment> models) {
     this._models = models;
   }
 
@@ -23,7 +24,7 @@ class _ReviewsState extends State<Reviews> {
   double _currentRating = 0;
   String _textError = "";
 
-  late List<ReviewModel> _models;
+  late List<Comment> _models;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class _ReviewsState extends State<Reviews> {
               children: [
                 ..._models
                     .map(
-                      (ReviewModel element) => Review(model: element),
+                      (Comment element) => Review(model: element),
                     )
                     .toList(),
                 const SizedBox(
@@ -71,7 +72,7 @@ class _ReviewsState extends State<Reviews> {
                               builder: (BuildContext context) {
                                 return AddRate();
                               }).then((value) {
-                            ReviewModel proba = value as ReviewModel;
+                            Comment proba = value as Comment;
 
                             setState(() {
                               _models.add(proba); //TO DO treba da upamti u bazu

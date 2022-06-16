@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:moj_majstor/AppState.dart';
@@ -6,9 +5,7 @@ import 'package:moj_majstor/Majsor.dart';
 import 'package:moj_majstor/ShimmerList.dart';
 import 'package:moj_majstor/filter.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import 'SearchFilterDrawer.dart';
-import 'getxstate.dart';
 import 'homeHeaderDelegate.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -31,12 +28,12 @@ class proba extends StatefulWidget {
 }
 
 class _probaState extends State<proba> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final filterController = Get.find<Filter>();
+  @override
   void initState() {
     super.initState();
-    filterController.search();
-    // Provider.of<AppState>(context, listen: false).ProcitajMajstori();
+    filterController.get(true);
   }
 
   bool p = true;
@@ -46,7 +43,7 @@ class _probaState extends State<proba> {
   }
 
   void _onLoading() async {
-    int n = await filterController.loadMore();
+    int n = await filterController.get(false);
     if (n == 0) {
       _refreshController.loadNoData();
     } else {
@@ -59,12 +56,12 @@ class _probaState extends State<proba> {
     super.dispose();
   }
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: SafeArea(
+      endDrawer: const SafeArea(
         child: FilterDrawer(),
       ),
       body: Container(
@@ -91,15 +88,13 @@ class _probaState extends State<proba> {
                     child: SizedBox(
                       child: Obx(
                         () => Column(
-                          //for (int i = 0; i < 100; i++)
-
                           children: filterController.majstori.isNotEmpty
                               ? (filterController.majstori.map((e) {
                                   return Majstor(
                                     majstor: e,
                                   );
                                 }).toList())
-                              : [ShimmerList()],
+                              : [const ShimmerList()],
                         ),
                       ),
                     ),
