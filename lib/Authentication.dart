@@ -69,6 +69,10 @@ class UserAuthentication with ChangeNotifier {
           .login(permissions: ["email", "public_profile"]);
       switch (result.status) {
         case LoginStatus.success:
+          final response1 = await http.get(Uri.parse(
+              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${result.accessToken!.token}'));
+          final profile = jsonDecode(response1.body);
+          print(profile);
           final response = await http.post(
             Uri.parse('http://100.101.167.63:3000/facebookLogin'),
             headers: <String, String>{
@@ -147,6 +151,7 @@ class UserAuthentication with ChangeNotifier {
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
+        print(credential.idToken);
         final response = await http.post(
           Uri.parse('http://100.101.167.63:3000/googleLogin'),
           headers: <String, String>{
@@ -164,7 +169,7 @@ class UserAuthentication with ChangeNotifier {
       }
       return 'Greska, pokusajte ponovo';
     } on Exception catch (e) {
-      return 'Gresaka, pokusajte ponovo!';
+      return e.toString();
     }
   }
 

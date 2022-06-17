@@ -63,12 +63,16 @@ class MessageList extends GetxController with LinkedListEntry<MessageList> {
 
   Future<void> sendMessagesNewChat(String text) async {
     try {
+      chatId = "111";
       messageController.chat.value.addFirst(this);
       messages.add(Message(
           text: text,
           dateTime: DateTime.now().toString(),
           sender: _ua.currentUser!.UID,
-          chatId: chatId));
+          chatId: "chatId"));
+
+      inspect(messages);
+      print("object");
       final response = await http.post(
         Uri.parse('http://100.79.156.38:3000/sendMessageNewChat'),
         headers: <String, String>{
@@ -93,6 +97,7 @@ class MessageList extends GetxController with LinkedListEntry<MessageList> {
 
   Future<void> sendMessages(String text) async {
     try {
+      print("object");
       Message message = Message(
           text: text,
           dateTime: DateTime.now().toString(),
