@@ -7,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:moj_majstor/Authentication.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print(
@@ -23,12 +24,21 @@ class Notification {
   Hmac hmacSha256 =
       Hmac(sha256, utf8.encode("MfgR78fS7FSAh78FSAUJi8FSU895H9Lo"));
 
+  UserAuthentication ua = UserAuthentication();
+
   factory Notification() {
     return _instance;
   }
 
   Notification._internal() {
     initFirebase();
+
+    ua.Events.stream.listen((String event) {
+      if (event == "SignIn") {
+        print("---------------SIgnIn");
+        subscribeDevice(ua.currentUser!.UID);
+      }
+    });
   }
 
   Future<void> initFirebase() async {
@@ -39,8 +49,8 @@ class Notification {
     await _getFCMToken();
     await _listenFCM();
     print("TOKEN: " + (_token ?? ""));
-    //subscribeToChannel("Testing");
-    subscribeDevice("Krstaa");
+    subscribeToChannel("Testing");
+    // subscribeDevice("Krstaa");
   }
 
   void dispose() {
@@ -60,7 +70,7 @@ class Notification {
 
     onMessageSubscription =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      String imageUrl = message.data["imageURL"];
+      String imageUrl = message.data["imageURL"] ?? "";
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null && !kIsWeb) {
@@ -160,8 +170,7 @@ class Notification {
     try {
       await http
           .post(
-            Uri.parse(
-                'https://notificationservicebytech.azurewebsites.net/subscribeDevice'),
+            Uri.parse('http://100.101.167.63:3000/subscribeDevice'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'securetoken': digest.toString(),
@@ -185,8 +194,7 @@ class Notification {
     try {
       await http
           .post(
-            Uri.parse(
-                'https://notificationservicebytech.azurewebsites.net/unSubscribeDevice'),
+            Uri.parse('http://100.101.167.63:3000/unSubscribeDevice'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'securetoken': digest.toString(),

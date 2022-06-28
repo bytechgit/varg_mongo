@@ -7,6 +7,7 @@ import 'package:moj_majstor/AppState.dart';
 import 'package:moj_majstor/InsertLocation.dart';
 import 'package:moj_majstor/InternetConnection.dart';
 import 'package:moj_majstor/Login.dart';
+import 'package:moj_majstor/SocketIO.dart';
 import 'package:moj_majstor/filter.dart';
 import 'package:moj_majstor/home.dart';
 import 'package:moj_majstor/messageControler.dart';
@@ -22,6 +23,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(SocketIO());
   final filterController = Get.put(Filter());
   final messageController = Get.put(messageControler());
   final FCM.Notification _notification = FCM.Notification();

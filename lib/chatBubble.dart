@@ -26,7 +26,7 @@ class chatBubble extends StatelessWidget {
           maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
         child: Text(
-          mess.text + " " + mess.dateTime,
+          mess.text + " ", // + mess.dateTime.,
           style: TextStyle(color: Colors.black87),
         ),
       ),

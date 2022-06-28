@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:moj_majstor/LocalDatabase.dart';
@@ -15,8 +16,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
+import 'messageControler.dart';
+import 'messageList.dart';
+
 class UserAuthentication with ChangeNotifier {
   static final UserAuthentication _singleton = UserAuthentication._internal();
+
+  StreamController<String> Events = StreamController.broadcast();
   factory UserAuthentication() {
     return _singleton;
   }
@@ -57,6 +63,7 @@ class UserAuthentication with ChangeNotifier {
   }
 
   Future<void> signout() async {
+    Events.add("SignOut");
     await _googleSignIn.signOut();
     await FacebookAuth.instance.logOut();
     user = null;
@@ -88,7 +95,10 @@ class UserAuthentication with ChangeNotifier {
             //novi user
             //treba da unese dodatni podaci
           }
+
           saveUserToLocalDb(user);
+
+          Events.add("SignIn");
 
           return 'Uspesna prijava';
         case LoginStatus.cancelled:
@@ -162,6 +172,8 @@ class UserAuthentication with ChangeNotifier {
         if (response.statusCode == 200) {
           user = UserData.fromMap(jsonDecode(response.body));
           saveUserToLocalDb(user);
+          Events.add("SignIn");
+
           return 'Uspesno ste prijavljeni!';
         } else {
           return 'Greska, pokusajte ponovo';
@@ -177,7 +189,7 @@ class UserAuthentication with ChangeNotifier {
       {required String email, required String password}) async {
     try {
       final response = await http.post(
-        Uri.parse('http://100.79.156.38:3000/Register'),
+        Uri.parse('http://100.101.167.63:3000/Register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -189,6 +201,7 @@ class UserAuthentication with ChangeNotifier {
       );
       if (response.statusCode == 200) {
         user = UserData.fromMap(jsonDecode(response.body));
+        Events.add("SignIn");
         return 'Uspesno ste prijavljeni';
       } else {
         inspect(response);
@@ -204,7 +217,7 @@ class UserAuthentication with ChangeNotifier {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('http://100.79.156.38:3000/SignUp'),
+        Uri.parse('http://100.101.167.63:3000/SignUp'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -223,7 +236,7 @@ class UserAuthentication with ChangeNotifier {
 
   Future<http.Response> addUser(MajstorModel majstor) {
     return http.post(
-      Uri.parse('http://100.79.156.38:3000/addUser'),
+      Uri.parse('http://100.101.167.63:3000/addUser'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

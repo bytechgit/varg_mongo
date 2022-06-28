@@ -269,8 +269,8 @@ class _ProfilState extends State<Profil> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => Chat(
-                                                ml: messageController.getChat(
-                                                    widget.majstor.UID),
+                                                ml: messageController
+                                                    .getChat(widget.majstor),
                                               ),
                                             ),
                                           );

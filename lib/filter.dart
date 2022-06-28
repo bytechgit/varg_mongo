@@ -25,7 +25,8 @@ class Filter extends GetxController {
         skip = 0;
       }
       final response = await http.post(
-        Uri.parse('http://100.101.167.63:3000/getUsers'),
+        Uri.parse(
+            'http://vargapp-env.eba-is6gvbmw.us-east-1.elasticbeanstalk.com/getUsers'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

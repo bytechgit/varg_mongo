@@ -63,11 +63,11 @@ class _InboxState extends State<Inbox> {
                         //       builder: (context) => const Search()),
                         // );
 
-                        messageController.recieveMessage(Message(
+                        /*  messageController.recieveMessage(Message(
                             text: "text",
                             dateTime: DateTime.now().second.toString(),
                             sender: "sender",
-                            chatId: "chatId"));
+                            chatId: "chatId"));*/
                       },
                       icon: const Icon(Icons.search),
                       iconSize: 30,

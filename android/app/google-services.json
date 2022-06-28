@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "206265439348-g2vam3nf027r2fdn385fknep2ifaidg5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "bytech.rs.moj_majstor",
-            "certificate_hash": "2c66d6b2c15faf652f38300b7f5b3f9d2453a0ad"
-          }
-        },
-        {
           "client_id": "206265439348-0sn8e66r3ck1jdhmuieoc2j3gf0qv6ld.apps.googleusercontent.com",
           "client_type": 3
         }

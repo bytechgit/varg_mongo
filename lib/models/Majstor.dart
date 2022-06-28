@@ -173,7 +173,7 @@ class MajstorModel {
     int pomskip = loadedComments;
     try {
       final response = await http.post(
-        Uri.parse('http://100.101.167.63:3000/getComments'),
+        Uri.parse('http://100.101.167.63:3000/loadComments'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

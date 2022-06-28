@@ -31,7 +31,8 @@ class _ChatState extends State<Chat> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   Future<void> onRefresh() async {
-    messageController.getMessages();
+    //  messageController.getMessages();
+    widget.ml.loadChatMessages();
     _refreshController.refreshCompleted();
   }
 
@@ -56,15 +57,14 @@ class _ChatState extends State<Chat> {
             title: Column(
               //crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 20.0,
-                  backgroundImage: NetworkImage(
-                      'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=2000'),
+                  backgroundImage: NetworkImage(widget.ml.profilePhoto),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 3),
                   child: Text(
-                    'Marija Krsanin',
+                    widget.ml.userName,
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 15,

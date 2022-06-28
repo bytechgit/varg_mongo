@@ -79,6 +79,7 @@ dependencies:
   crypto: ^3.0.2
   socket_io_client: ^1.0.2
   mongo_dart: ^0.7.4+1
+  rxdart: ^0.27.4
   #google_api_headers: ^1.1.1
   #google_maps_webservice: ^0.0.20-nullsafety.5
   #flutter_google_places: ^0.3.0
